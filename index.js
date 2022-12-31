@@ -26,20 +26,20 @@ async function query(sql) {
 
 async function prepareDB() {
   await query(
-    `CREATE TABLE if not exists Persons (id int NOT NULL AUTO_INCREMENT, name varchar(255) NOT NULL, PRIMARY KEY (id));`
+    `CREATE TABLE if not exists people (id int NOT NULL AUTO_INCREMENT, name varchar(255) NOT NULL, PRIMARY KEY (id));`
   );
 }
 
 async function insertName() {
   await query(
-    `INSERT INTO Persons (name) VALUES ('${faker.name
+    `INSERT INTO people (name) VALUES ('${faker.name
       .fullName()
       .replace(/'/g, '')}')`
   );
 }
 
 async function getNames() {
-  return query(`SELECT * FROM Persons;`);
+  return query(`SELECT * FROM people;`);
 }
 
 (async function () {
