@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  app:
+    build: .
+    volumes:
+      - .:/app
+    container_name: js_app
+    depends_on:
+      - db
+    networks:
+      - backend
+
+  db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - .docker/db:/var/lib/mysql
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: database
+    networks:
+      - backend
+
+  nginx:
+    build: .docker/nginx/.
+    image: nginx-fc
+    depends_on:
+      - app
+    ports:
+      - "8080:8080"
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
